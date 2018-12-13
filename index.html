@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Wing & Horns</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+
+
+  <link rel="stylesheet" href="css/style.css">
+
+
+</head>
+
+<body>
+
+  <nav class="nav nav--left js-nav">
+    <ul>
+      <li>
+        <a href="#"><span>Mens</span></a>
+      </li>
+      <li>
+        <a href="#"><span>Womens</span></a>
+      </li>
+      <li>
+        <a href="#" class="is-active"><span>Collections</span></a>
+      </li>
+    </ul>
+  </nav>
+
+  <figure class="logo">
+    <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/58281/logo_copy_copy.svg">
+  </figure>
+
+  <nav class="nav nav--right">
+    <ul>
+      <li>
+        <a href="https://twitter.com/Jesper_Landberg?lang=en" target="_blank"><span>Say hi</span></a>
+      </li>
+      <li>
+        <a href="#">
+          <span>Cart</span>
+          <div class="cart-total">0</div>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="slider js-slider">
+    <div class="slider__inner js-slider__inner"></div>
+
+    <div class="slide js-slide">
+      <div class="slide__content">
+        <figure class="slide__img js-slide__img">
+          <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/58281/photo1.jpg">
+        </figure>
+        <figure class="slide__img js-slide__img">
+          <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/58281/photo2.jpg">
+        </figure>
+      </div>
+
+      <div class="slider__text js-slider__text">
+        <div class="slider__text-line js-slider__text-line">
+          <div>Black is</div>
+        </div>
+        <div class="slider__text-line js-slider__text-line">
+          <div>timeless. Black is</div>
+        </div>
+        <div class="slider__text-line js-slider__text-line">
+          <div>the colour of</div>
+        </div>
+        <div class="slider__text-line js-slider__text-line">
+          <div>Eternity.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="slide js-slide">
+      <div class="slide__content">
+        <figure class="slide__img js-slide__img">
+          <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/58281/photo3.jpg">
+        </figure>
+        <figure class="slide__img js-slide__img">
+          <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/58281/photo4.jpg">
+        </figure>
+      </div>
+    </div>
+
+    <div class="slide js-slide">
+      <div class="slide__content">
+        <figure class="slide__img js-slide__img">
+          <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/58281/photo5.jpg">
+        </figure>
+        <figure class="slide__img js-slide__img">
+          <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/58281/photo6.jpg">
+        </figure>
+      </div>
+    </div>
+
+    <nav class="slider__nav js-slider__nav">
+      <div class="slider-bullet js-slider-bullet">
+        <span class="slider-bullet__text js-slider-bullet__text">01</span>
+        <span class="slider-bullet__line js-slider-bullet__line"></span>
+      </div>
+      <div class="slider-bullet js-slider-bullet">
+        <span class="slider-bullet__text js-slider-bullet__text">02</span>
+        <span class="slider-bullet__line js-slider-bullet__line"></span>
+      </div>
+      <div class="slider-bullet js-slider-bullet">
+        <span class="slider-bullet__text js-slider-bullet__text">03</span>
+        <span class="slider-bullet__line js-slider-bullet__line"></span>
+      </div>
+    </nav>
+
+    <div class="scroll js-scroll">Scroll</div>
+
+  </div>
+
+  <div class="vert-text">
+    <span>
+      Wings+Horns<br>
+      X Kyoto Black
+    </span>
+  </div>
+
+  <script id="vertexShader" type="x-shader/x-vertex">
+    varying vec2 vUv;
+  void main() {
+    vUv = uv;
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+  }
+</script>
+
+  <script id="fragmentShader" type="x-shader/x-fragment">
+    varying vec2 vUv;
+
+  uniform sampler2D texture1;
+  uniform sampler2D texture2;
+  uniform sampler2D disp;
+
+  uniform float dispPower;
+  uniform float intensity;
+  
+  void main() {
+    vec2 uv = vUv;
+    
+    vec4 disp = texture2D(disp, uv);
+    vec2 dispVec = vec2(disp.x, disp.y);
+    
+    vec2 distPos1 = uv + (dispVec * intensity * dispPower);
+    vec2 distPos2 = uv + (dispVec * -(intensity * (1.0 - dispPower)));
+    
+    vec4 _texture1 = texture2D(texture1, distPos1);
+    vec4 _texture2 = texture2D(texture2, distPos2);
+    
+    gl_FragColor = mix(_texture1, _texture2, dispPower);
+  }
+</script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/three.js/97/three.min.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/2.0.2/TweenMax.min.js'></script>
+
+
+
+  <script src="js/index.js"></script>
+
+
+
+
+</body>
+
+</html>
